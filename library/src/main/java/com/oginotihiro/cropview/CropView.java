@@ -141,8 +141,7 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
             }
         }
     }
-
-    public Bitmap getOutput() {
+    public Rect getOutputRect() {
         if (getDrawable() == null || mCropRect == null) {
             return null;
         }
@@ -164,7 +163,13 @@ public class CropView extends ImageView implements ViewTreeObserver.OnGlobalLayo
                 (int) ((leftOffset + mCropRect.width()) / scale * mSampleSize),
                 (int) ((topOffset + mCropRect.height()) / scale * mSampleSize)
         );
-
+        return cropRect;
+    }
+    public Bitmap getOutput() {
+        Rect cropRect =getOutputRect();
+        if(cropRect==null){
+            return null;
+        }
         return CropUtil.decodeRegionCrop(getContext(), mSource, cropRect, mOutputX, mOutputY, mBitmapDisplayed.getRotation());
     }
 
